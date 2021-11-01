@@ -55,7 +55,8 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'job' => ['required'],
             'instance' => ['required'],
-            'phone' => ['required']
+            'phone' => ['required'],
+            'role' => ['required'],
         ]);
     }
 
@@ -67,13 +68,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+//        dd($data);
+        $user  = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'job' => $data['job'],
             'instance' => $data['instance'],
-            'phone' => $data['phone']
+            'phone' => $data['phone'],
+            'role' => $data['role']
         ]);
+        if($data['role'] == '1')
+        {
+            $user->assignRole('organizer');
+        } elseif($data['role'] == '2')
+        {
+            $user->asssignRole('participant');
+        } else
+        {
+            $user->assignRole('admin');
+        }
+
+        return $user;
     }
 }

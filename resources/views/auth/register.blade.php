@@ -154,6 +154,14 @@
                                             @enderror
                                         </div>
                                         <div class="col-12">
+                                            <label for="role" class="form-label">Role</label>
+                                            <select class="form-select" id="role" name="role" required>
+                                                <option selected>Choose Who You are</option>
+                                                <option value="1">Organizer</option>
+                                                <option value="2">Participant</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
                                             <label for="password" class="form-label">Password</label>
                                             <div class="input-group" id="show_hide_password">
                                                 <input type="password" class="form-control border-end-0 @error('password')
