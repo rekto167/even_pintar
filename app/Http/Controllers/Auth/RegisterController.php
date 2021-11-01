@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class RegisterController extends Controller
 {
@@ -69,8 +70,19 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-//        dd($data);
+        if($data['role'] == '1')
+        {
+            $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => 'ORE-']);
+        } elseif($data['role'] == '2')
+        {
+            $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => 'PTP-']);
+        } else
+        {
+            $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => 'ADM-']);
+        }
+
         $user  = User::create([
+            'id' => $id,
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

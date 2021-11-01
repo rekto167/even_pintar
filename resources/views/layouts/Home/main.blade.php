@@ -12,7 +12,7 @@
     {{-- Styling additional --}}
     <style>
         .jumbotron{
-            background-image: url('{{ asset('img/dummy/event.jpg') }}');
+            background-image: url('{{ asset('synadmin/img/dummy/event.jpg') }}');
             background-size: cover;
             color: white;
         }
@@ -46,7 +46,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <!-- Dropdown menu links -->
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i>Setting Profile</a></li>
+                        <li><a class="dropdown-item" href="{{route('dashboard')}}"><i class="bi bi-gear"></i>Setting Profile</a></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i>Setting</a></li>
                     </ul>
                 </div>

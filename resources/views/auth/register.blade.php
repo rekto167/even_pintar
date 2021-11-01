@@ -159,6 +159,7 @@
                                                 <option selected>Choose Who You are</option>
                                                 <option value="1">Organizer</option>
                                                 <option value="2">Participant</option>
+                                                <option value="3">Admin</option>
                                             </select>
                                         </div>
                                         <div class="col-12">
