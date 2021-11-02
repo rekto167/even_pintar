@@ -22,6 +22,7 @@ class Organizer extends Authenticatable
     protected $foreignKeys = 'user_id';
     protected $fillable = [
         'user_id',
+        'username',
         'name',
         'email',
         'password',

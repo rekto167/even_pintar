@@ -101,6 +101,15 @@
                                     <form class="row g-3" method="post" action="{{ route('register') }}">
                                         @csrf
                                         <div class="col-sm-12">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" placeholder="Please enter your full username" required autocomplete="username" autofocus value="{{ old('username') }}">
+                                            @error('username')
+                                            <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-sm-12">
                                             <label for="name" class="form-label">Name</label>
                                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Please enter your full name" required autocomplete="name" autofocus value="{{ old('name') }}">
                                             @error('name')

@@ -55,6 +55,7 @@ class RegisterController extends Controller
         if($data['role'] == '1')
         {
             return Validator::make($data, [
+                'username' => ['required', 'string', 'unique:organizers'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:organizers'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -66,6 +67,7 @@ class RegisterController extends Controller
         } elseif($data['role'] == '2')
         {
             return Validator::make($data, [
+                'username' => ['required', 'string', 'unique:participants'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -77,6 +79,7 @@ class RegisterController extends Controller
         } elseif($data['role'] == '3')
         {
             return Validator::make($data, [
+                'username' => ['required', 'string', 'unique:admins'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -97,13 +100,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // dd($data);
-
         if($data['role'] == '1')
         {
             $user_id = Helper::IDGenerator(new Organizer, 'user_id', 5, 'ORG');
             $user  = Organizer::create([
                 'user_id' => $user_id,
+                'username' => $data['username'],
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
@@ -118,6 +120,7 @@ class RegisterController extends Controller
             $user_id = Helper::IDGenerator(new User, 'user_id', 5, 'PRT');
             $user  = User::create([
                 'user_id' => $user_id,
+                'username' => $data['username'],
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
@@ -133,6 +136,7 @@ class RegisterController extends Controller
             $user_id = Helper::IDGenerator(new Admin, 'user_id', 5, 'ADM');
             $user  = Admin::create([
                 'user_id' => $user_id,
+                'username' => $data['username'],
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),

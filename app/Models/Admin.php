@@ -18,9 +18,11 @@ class Admin extends Authenticatable
      *
      * @var string[]
      */
+    protected $guard_name = 'web';
     protected $foreignKeys = 'user_id';
     protected $fillable = [
         'user_id',
+        'username',
         'name',
         'email',
         'password',
