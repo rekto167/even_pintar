@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Admin;
+use App\Models\Organizer;
+use App\Helper\Helper;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -50,15 +52,41 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'job' => ['required'],
-            'instance' => ['required'],
-            'phone' => ['required'],
-            'role' => ['required'],
-        ]);
+        if($data['role'] == '1')
+        {
+            return Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:organizers'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'job' => ['required'],
+                'instance' => ['required'],
+                'phone' => ['required'],
+                'role' => ['required'],
+            ]);
+        } elseif($data['role'] == '2')
+        {
+            return Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'job' => ['required'],
+                'instance' => ['required'],
+                'phone' => ['required'],
+                'role' => ['required'],
+            ]);
+        } elseif($data['role'] == '3')
+        {
+            return Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'job' => ['required'],
+                'instance' => ['required'],
+                'phone' => ['required'],
+                'role' => ['required'],
+            ]);
+        }
+
     }
 
     /**
@@ -69,37 +97,52 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // dd($data);
 
         if($data['role'] == '1')
         {
-            $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => 'ORE-']);
-        } elseif($data['role'] == '2')
-        {
-            $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => 'PTP-']);
-        } else
-        {
-            $id = IdGenerator::generate(['table' => 'users', 'length' => 10, 'prefix' => 'ADM-']);
-        }
-
-        $user  = User::create([
-            'id' => $id,
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'job' => $data['job'],
-            'instance' => $data['instance'],
-            'phone' => $data['phone'],
-            'role' => $data['role']
-        ]);
-        if($data['role'] == '1')
-        {
+            $user_id = Helper::IDGenerator(new Organizer, 'user_id', 5, 'ORG');
+            $user  = Organizer::create([
+                'user_id' => $user_id,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'job' => $data['job'],
+                'instance' => $data['instance'],
+                'phone' => $data['phone'],
+                'role' => $data['role']
+            ]);
             $user->assignRole('organizer');
         } elseif($data['role'] == '2')
         {
+            $user_id = Helper::IDGenerator(new User, 'user_id', 5, 'PRT');
+            $user  = User::create([
+                'user_id' => $user_id,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'job' => $data['job'],
+                'instance' => $data['instance'],
+                'phone' => $data['phone'],
+                'role' => $data['role']
+            ]);
             $user->asssignRole('participant');
-        } else
+
+        } elseif($data['role'] == '3')
         {
+            $user_id = Helper::IDGenerator(new Admin, 'user_id', 5, 'ADM');
+            $user  = Admin::create([
+                'user_id' => $user_id,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'job' => $data['job'],
+                'instance' => $data['instance'],
+                'phone' => $data['phone'],
+                'role' => $data['role']
+            ]);
             $user->assignRole('admin');
+
         }
 
         return $user;

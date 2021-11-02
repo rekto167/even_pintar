@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -18,7 +18,6 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $guard_name = 'web';
     protected $foreignKeys = 'user_id';
     protected $fillable = [
         'user_id',
@@ -30,7 +29,6 @@ class User extends Authenticatable
         'instance',
         'role'
     ];
-
 
     /**
      * The attributes that should be hidden for serialization.
